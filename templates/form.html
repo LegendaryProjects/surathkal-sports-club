@@ -1,0 +1,83 @@
+{% extends "layout1.html" %}
+
+{% block Title %}
+Team Players
+{% endblock %}
+
+{% block main %}
+<section class="hero-panel mb-4">
+    <h1 class="hero-title">{{ team.name }} - {{ team.sport }}</h1>
+    <p class="hero-subtitle mb-0">Add player details and manage team roster.</p>
+    <a class="btn btn-outline-secondary mt-3" href="/teams">Back to Teams</a>
+</section>
+
+<section class="card-surface mb-4 form-shell">
+    <h2 class="card-title">Add Player</h2>
+    <form action="/teams/{{ team.id }}/players" method="post" class="d-grid gap-3">
+        <div>
+            <label class="form-label" for="player_name">Player Name</label>
+            <input id="player_name" class="form-control" type="text" name="player_name" placeholder="Enter player full name" maxlength="80" value="{{ form_data.player_name if form_data else '' }}" required>
+        </div>
+
+        <div>
+            <label class="form-label" for="player_age">Player Age</label>
+            <input id="player_age" class="form-control" type="text" name="player_age" inputmode="numeric" maxlength="2" pattern="[0-9]+" placeholder="Age" value="{{ form_data.player_age if form_data else '' }}" required>
+        </div>
+
+        <div>
+            <label class="form-label" for="jersey_name">Jersey Name</label>
+            <input id="jersey_name" class="form-control" type="text" name="jersey_name" placeholder="Example: Thunder" maxlength="40" value="{{ form_data.jersey_name if form_data else '' }}" required>
+        </div>
+
+        <div>
+            <label class="form-label" for="jersey_number">Jersey Number</label>
+            <input id="jersey_number" class="form-control" type="text" name="jersey_number" inputmode="numeric" maxlength="2" pattern="[0-9]+" placeholder="1 - 99" value="{{ form_data.jersey_number if form_data else '' }}" required>
+        </div>
+
+        <button class="btn btn-accent" type="submit">Add Player</button>
+    </form>
+</section>
+
+<section class="card-surface">
+    <h2 class="card-title">Player List</h2>
+    {% if players %}
+    <div class="table-responsive">
+        <table class="table table-theme table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Player Name</th>
+                    <th>Age</th>
+                    <th>Jersey Name</th>
+                    <th>Jersey Number</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for player in players %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ player.player_name }}</td>
+                    <td>{{ player.age }}</td>
+                    <td>{{ player.jersey_name }}</td>
+                    <td>{{ player.jersey_number }}</td>
+                    <td>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a class="btn btn-sm btn-outline-secondary" href="/players/{{ player.id }}/edit?next=/teams/{{ team.id }}/players">Edit Player</a>
+                            <form action="/players/{{ player.id }}/delete" method="post" class="m-0" onsubmit="return confirm('Delete this player?');">
+                                <input type="hidden" name="next_url" value="/teams/{{ team.id }}/players">
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Delete Player</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-state">No players added to this team yet.</p>
+    {% endif %}
+</section>
+
+{% endblock %}

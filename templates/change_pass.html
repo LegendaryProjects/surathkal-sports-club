@@ -1,0 +1,26 @@
+{% extends "layout1.html" %}
+
+{% block Title %}
+Change_Password
+{% endblock %}
+
+{% block main %}
+<section class="card-surface form-shell">
+    <h1 class="card-title">Change Password</h1>
+    <form action="/change_pass" method="post" class="d-grid gap-3">
+        <div>
+            <label class="form-label" for="old_pass">Current Password</label>
+            <input id="old_pass" autocomplete="off" autofocus class="form-control" name="old_pass" placeholder="Current password" type="password" required>
+        </div>
+        <div>
+            <label class="form-label" for="new_pass">New Password</label>
+            <input id="new_pass" class="form-control" name="new_pass" placeholder="Minimum 8 characters" type="password" required>
+        </div>
+        <div>
+            <label class="form-label" for="conf_pass">Confirm Password</label>
+            <input id="conf_pass" class="form-control" name="conf_pass" placeholder="Re-enter password" type="password" required>
+        </div>
+        <button class="btn btn-accent" type="submit">Update Password</button>
+    </form>
+</section>
+{% endblock %}

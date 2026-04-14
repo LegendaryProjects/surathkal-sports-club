@@ -1,0 +1,69 @@
+{% extends "layout1.html" %}
+
+{% block Title %}
+Events
+{% endblock %}
+
+{% block main %}
+<section class="hero-panel mb-4">
+    <h1 class="hero-title">Create Tournament Events</h1>
+    <p class="hero-subtitle mb-0">Set tournament name and date range, then schedule matches between existing teams.</p>
+</section>
+
+<section class="card-surface mb-4 form-shell">
+    <h2 class="card-title">Create Tournament</h2>
+    <form action="/events" method="post" class="d-grid gap-3">
+        <div>
+            <label class="form-label" for="tournament_name">Tournament Name</label>
+            <input id="tournament_name" name="tournament_name" class="form-control" type="text" placeholder="Example: Coastal Cup 2026" value="{{ form_data.tournament_name if form_data else '' }}" required>
+        </div>
+        <div>
+            <label class="form-label" for="start_date">Start Date</label>
+            <input id="start_date" name="start_date" class="form-control" type="date" value="{{ form_data.start_date if form_data else '' }}" required>
+        </div>
+        <div>
+            <label class="form-label" for="end_date">End Date</label>
+            <input id="end_date" name="end_date" class="form-control" type="date" value="{{ form_data.end_date if form_data else '' }}" required>
+        </div>
+        <button class="btn btn-accent" type="submit">Create Tournament</button>
+    </form>
+</section>
+
+<section class="card-surface">
+    <h2 class="card-title">Tournament List</h2>
+    {% if tournaments %}
+    <div class="table-responsive">
+        <table class="table table-theme table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tournament</th>
+                    <th>Date Range</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tournament in tournaments %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ tournament.name }}</td>
+                    <td>{{ tournament.start_date.strftime('%d %b %Y') }} to {{ tournament.end_date.strftime('%d %b %Y') }}</td>
+                    <td>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a class="btn btn-sm btn-outline-secondary" href="/events/{{ tournament.id }}/edit?next=/events">Edit Tournament</a>
+                            <a class="btn btn-sm btn-outline-primary" href="/events/{{ tournament.id }}">Manage Matches</a>
+                            <form action="/events/{{ tournament.id }}/delete" method="post" class="m-0" onsubmit="return confirm('Delete this tournament and all matches?');">
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Delete Tournament</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-state">No tournaments created yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

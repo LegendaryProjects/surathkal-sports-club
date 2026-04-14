@@ -1,0 +1,57 @@
+{% extends "layout1.html" %}
+{% block Title %}
+Players
+{% endblock %}
+{% block main %}
+<section class="card-surface">
+    <h1 class="card-title">All Players</h1>
+
+    {% if players %}
+    <div class="table-responsive">
+        <table class="table table-theme table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Player Name</th>
+                    <th>Age</th>
+                    <th>Team</th>
+                    <th>Game</th>
+                    <th>Jersey Name</th>
+                    <th>Jersey Number</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for player in players %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ player.player_name }}</td>
+                    <td>{{ player.age }}</td>
+                    <td>{{ player.team.name }}</td>
+                    <td>{{ player.team.sport }}</td>
+                    <td>{{ player.jersey_name }}</td>
+                    <td>{{ player.jersey_number }}</td>
+                    <td>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a class="btn btn-sm btn-outline-secondary" href="/players/{{ player.id }}/edit?next=/players">Edit Player</a>
+                            <a class="btn btn-sm btn-outline-primary" href="/teams/{{ player.team.id }}/players">Manage Team</a>
+                            <form action="/players/{{ player.id }}/delete" method="post" class="m-0" onsubmit="return confirm('Delete this player?');">
+                                <input type="hidden" name="next_url" value="/players">
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-state">No players added yet. Create a team and start adding players.</p>
+    {% endif %}
+</section>
+{% endblock %}
+
+
+
+

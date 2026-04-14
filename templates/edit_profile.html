@@ -1,0 +1,41 @@
+{% extends "layout1.html" %}
+
+{% block Title %}
+Edit Profile
+{% endblock %}
+
+{% block main %}
+<section class="hero-panel mb-4">
+    <h1 class="hero-title">Edit Organizer Profile</h1>
+    <p class="hero-subtitle mb-0">Update name, email, and password in a single save operation.</p>
+</section>
+
+<section class="card-surface form-shell">
+    <h2 class="card-title">Profile Details</h2>
+    <form action="/edit_profile" method="post" class="d-grid gap-3">
+        <div>
+            <label class="form-label" for="username">Name</label>
+            <input id="username" name="username" class="form-control" type="text" value="{{ form_data.username if form_data else '' }}" required>
+        </div>
+
+        <div>
+            <label class="form-label" for="email">Email</label>
+            <input id="email" name="email" class="form-control" type="email" value="{{ form_data.email if form_data else '' }}" required>
+        </div>
+
+        <hr class="my-2">
+
+        <div>
+            <label class="form-label" for="password">Password</label>
+            <input id="password" name="password" class="form-control" type="password" minlength="8" placeholder="Leave blank to keep current password">
+        </div>
+
+        <div>
+            <label class="form-label" for="confirm_password">Confirm Password</label>
+            <input id="confirm_password" name="confirm_password" class="form-control" type="password" minlength="8" placeholder="Repeat password">
+        </div>
+
+        <button class="btn btn-accent" type="submit">Save</button>
+    </form>
+</section>
+{% endblock %}

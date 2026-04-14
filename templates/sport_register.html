@@ -1,0 +1,66 @@
+{% extends "layout1.html" %}
+
+{% block Title %}
+Teams
+{% endblock %}
+{% block main %}
+<section class="hero-panel mb-4">
+	<h1 class="hero-title">Create and Manage Teams</h1>
+	<p class="hero-subtitle mb-0">Add team details first, then manage players inside each team.</p>
+</section>
+
+<section class="card-surface mb-4 form-shell">
+	<h2 class="card-title">Create Team</h2>
+	<form action="/teams" method="post" class="d-grid gap-3">
+		<div>
+			<label class="form-label" for="team_name">Team Name</label>
+			<input id="team_name" name="team_name" class="form-control" type="text" placeholder="Example: Surathkal Strikers" value="{{ form_data.team_name if form_data else '' }}" required>
+		</div>
+		<div>
+			<label class="form-label" for="sport">Game Name</label>
+			<input id="sport" name="sport" class="form-control" type="text" placeholder="Example: Football" value="{{ form_data.sport if form_data else '' }}" required>
+		</div>
+		<button class="btn btn-accent" type="submit">Create Team</button>
+	</form>
+</section>
+
+<section class="card-surface">
+	<h2 class="card-title">Team List</h2>
+	{% if teams %}
+	<div class="table-responsive">
+		<table class="table table-theme table-striped align-middle">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Team Name</th>
+					<th>Game</th>
+					<th>Players</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for team in teams %}
+				<tr>
+					<td>{{ loop.index }}</td>
+					<td>{{ team.name }}</td>
+					<td>{{ team.sport }}</td>
+					<td>{{ team_counts.get(team.id, 0) }}</td>
+					<td>
+						<div class="d-flex gap-2 flex-wrap">
+							<a class="btn btn-sm btn-outline-secondary" href="/teams/{{ team.id }}/edit">Edit Team</a>
+							<a class="btn btn-sm btn-outline-primary" href="/teams/{{ team.id }}/players">Manage Players</a>
+							<form action="/teams/{{ team.id }}/delete" method="post" class="m-0" onsubmit="return confirm('Delete this team and all its players?');">
+								<button class="btn btn-sm btn-outline-danger" type="submit">Delete Team</button>
+							</form>
+						</div>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{% else %}
+	<p class="empty-state">No teams created yet.</p>
+	{% endif %}
+</section>
+{% endblock %}

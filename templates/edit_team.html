@@ -1,0 +1,32 @@
+{% extends "layout1.html" %}
+
+{% block Title %}
+Edit Team
+{% endblock %}
+
+{% block main %}
+<section class="hero-panel mb-4">
+    <h1 class="hero-title">Edit Team</h1>
+    <p class="hero-subtitle mb-0">Update team name or game details.</p>
+</section>
+
+<section class="card-surface form-shell">
+    <h2 class="card-title">Team Details</h2>
+    <form action="/teams/{{ team.id }}/edit" method="post" class="d-grid gap-3">
+        <div>
+            <label class="form-label" for="team_name">Team Name</label>
+            <input id="team_name" name="team_name" class="form-control" type="text" value="{{ form_data.team_name if form_data else '' }}" required>
+        </div>
+
+        <div>
+            <label class="form-label" for="sport">Game Name</label>
+            <input id="sport" name="sport" class="form-control" type="text" value="{{ form_data.sport if form_data else '' }}" required>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap">
+            <button class="btn btn-accent" type="submit">Save</button>
+            <a class="btn btn-outline-secondary" href="/teams">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

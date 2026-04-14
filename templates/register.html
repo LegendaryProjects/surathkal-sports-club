@@ -1,0 +1,30 @@
+{% extends "layout2.html" %}
+
+{% block Title %}
+Register
+{% endblock %}
+
+{% block main %}
+<section class="card-surface form-shell">
+  <h1 class="card-title">Create Organizer Account</h1>
+  <form action="/register" method="post" class="d-grid gap-3">
+    <div>
+      <label class="form-label" for="username">Username</label>
+      <input id="username" type="text" name="username" placeholder="Enter your username" class="form-control" autocomplete="off" autofocus value="{{ form_data.username if form_data else '' }}" required>
+    </div>
+    <div>
+      <label class="form-label" for="mail">Email</label>
+      <input id="mail" type="email" class="form-control" name="mail" placeholder="name@example.com" value="{{ form_data.mail if form_data else '' }}" required>
+    </div>
+    <div>
+      <label class="form-label" for="password">Password</label>
+      <input id="password" type="password" name="password" placeholder="At least 8 characters" class="form-control" required>
+    </div>
+    <div>
+      <label class="form-label" for="confirm_password">Confirm Password</label>
+      <input id="confirm_password" type="password" name="confirm_password" placeholder="Re-enter password" class="form-control" required>
+    </div>
+    <button class="btn btn-accent" type="submit">Register</button>
+  </form>
+</section>
+{% endblock %}

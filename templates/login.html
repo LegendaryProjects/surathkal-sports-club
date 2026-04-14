@@ -1,0 +1,24 @@
+{% extends "layout1.html" %}
+
+{% block Title %}
+Login
+{% endblock %}
+
+{% block main %}
+<section class="card-surface form-shell">
+    <h1 class="card-title">Organizer Login</h1>
+    <form action="/login" method="post" class="d-grid gap-3">
+        <div>
+            <label class="form-label" for="email">Email</label>
+            <input id="email" autocomplete="off" autofocus class="form-control" name="email" placeholder="Enter registered email" type="email" value="{{ form_data.email if form_data else '' }}" required>
+        </div>
+        <div>
+            <label class="form-label" for="password">Password</label>
+            <input id="password" class="form-control" name="password" placeholder="Enter password" type="password" required>
+        </div>
+        <button class="btn btn-accent" type="submit">Login</button>
+        <p class="mb-0 text-secondary">New organizer? <a href="/register">Create an account</a>.</p>
+    </form>
+</section>
+{% endblock %}
+

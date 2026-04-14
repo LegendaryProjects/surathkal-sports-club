@@ -1,0 +1,13 @@
+{% extends "layout1.html" %}
+
+{% block Title %}
+Error
+{% endblock %}
+
+{% block main %}
+<section class="card-surface form-shell text-center">
+    <h1 class="card-title text-danger">{{ code }}</h1>
+    <p class="mb-4">{{ message }}</p>
+    <a class="btn btn-accent" href="/">Go Back Home</a>
+</section>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends "layout1.html" %}
+
+{% block Title %}
+Tournament Details
+{% endblock %}
+
+{% block main %}
+<section class="hero-panel mb-4">
+    <h1 class="hero-title">{{ tournament.name }}</h1>
+    <p class="hero-subtitle mb-0">Date Range: {{ tournament.start_date.strftime('%d %b %Y') }} to {{ tournament.end_date.strftime('%d %b %Y') }}</p>
+    <div class="d-flex gap-2 flex-wrap mt-3">
+        <a class="btn btn-outline-secondary" href="/events">Back to Events</a>
+        <a class="btn btn-outline-secondary" href="/events/{{ tournament.id }}/edit?next=/events/{{ tournament.id }}">Edit Tournament</a>
+    </div>
+</section>
+
+<section class="card-surface mb-4 form-shell">
+    <h2 class="card-title">Add Match</h2>
+    <form action="/events/{{ tournament.id }}" method="post" class="d-grid gap-3">
+        <div>
+            <label class="form-label" for="team_one_id">Team 1</label>
+            <select id="team_one_id" name="team_one_id" class="form-select" required>
+                <option value="" disabled {% if not form_data.team_one_id %}selected{% endif %}>Select team</option>
+                {% for team in teams %}
+                <option value="{{ team.id }}" {% if form_data and form_data.team_one_id == team.id %}selected{% endif %}>{{ team.name }} ({{ team.sport }})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label class="form-label" for="team_two_id">Team 2</label>
+            <select id="team_two_id" name="team_two_id" class="form-select" required>
+                <option value="" disabled {% if not form_data.team_two_id %}selected{% endif %}>Select team</option>
+                {% for team in teams %}
+                <option value="{{ team.id }}" {% if form_data and form_data.team_two_id == team.id %}selected{% endif %}>{{ team.name }} ({{ team.sport }})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label class="form-label" for="match_date">Match Date</label>
+            <input id="match_date" name="match_date" class="form-control" type="date" value="{{ form_data.match_date if form_data else '' }}" required>
+        </div>
+
+        <div>
+            <label class="form-label" for="start_time">Start Time</label>
+            <input id="start_time" name="start_time" class="form-control" type="time" value="{{ form_data.start_time if form_data else '' }}" required>
+        </div>
+
+        <div>
+            <label class="form-label" for="end_time">End Time</label>
+            <input id="end_time" name="end_time" class="form-control" type="time" value="{{ form_data.end_time if form_data else '' }}" required>
+        </div>
+
+        <button class="btn btn-accent" type="submit">Add Match</button>
+    </form>
+</section>
+
+<section class="card-surface">
+    <h2 class="card-title">Scheduled Matches</h2>
+    {% if matches %}
+    <div class="table-responsive">
+        <table class="table table-theme table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Game</th>
+                    <th>Match</th>
+                    <th>Date</th>
+                    <th>Time Range</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for match in matches %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ match.sport }}</td>
+                    <td>{{ match.team_one.name }} vs {{ match.team_two.name }}</td>
+                    <td>{{ match.match_date.strftime('%d %b %Y') }}</td>
+                    <td>{{ match.start_time.strftime('%I:%M %p') }} - {{ match.end_time.strftime('%I:%M %p') }}</td>
+                    <td>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a class="btn btn-sm btn-outline-secondary" href="/matches/{{ match.id }}/edit">Edit Match</a>
+                            <form action="/matches/{{ match.id }}/delete" method="post" class="m-0" onsubmit="return confirm('Delete this match?');">
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Delete Match</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-state">No matches scheduled in this tournament yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

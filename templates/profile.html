@@ -1,0 +1,44 @@
+{% extends "layout2.html" %}
+
+{% block Title %}
+Profile
+{% endblock %}
+{% block main %}
+<section class="card-surface mb-4">
+    <h1 class="card-title">Organizer Profile</h1>
+    <div class="profile-grid">
+        <article class="profile-kpi">
+            <h3>SR{{ "%05d"|format(user.id) }}</h3>
+            <p>Organizer ID</p>
+        </article>
+        <article class="profile-kpi">
+            <h3>{{ user.username }}</h3>
+            <p>Name</p>
+        </article>
+        <article class="profile-kpi">
+            <h3 class="text-break">{{ user.email }}</h3>
+            <p>Email</p>
+        </article>
+    </div>
+</section>
+
+<section class="card-surface">
+    <h2 class="card-title">Portal Overview</h2>
+    <div class="summary-grid">
+        <article class="summary-card">
+            <p class="summary-label">Teams</p>
+            <h4 class="summary-value">{{ total_teams }}</h4>
+        </article>
+        <article class="summary-card">
+            <p class="summary-label">Players</p>
+            <h4 class="summary-value">{{ total_players }}</h4>
+        </article>
+        <article class="summary-card">
+            <p class="summary-label">Tournaments</p>
+            <h4 class="summary-value">{{ total_tournaments }}</h4>
+        </article>
+    </div>
+</section>
+
+{% endblock %}
+
