@@ -25,6 +25,39 @@
 
 <section class="row g-4">
     <div class="col-lg-8">
+        <div class="card-surface mb-4">
+            <h2 class="card-title">Tournaments</h2>
+
+            {% if tournaments %}
+            <div class="table-responsive">
+                <table class="table table-theme table-striped align-middle">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Created By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tournament in tournaments %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ tournament.name }}</td>
+                            <td>{{ tournament.start_date }}</td>
+                            <td>{{ tournament.end_date }}</td>
+                            <td>{{ tournament.creator.username if tournament.creator else '-' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="empty-state">No tournaments created yet.</p>
+            {% endif %}
+        </div>
+
         <div class="card-surface">
             <h2 class="card-title">Recent Player Entries</h2>
 

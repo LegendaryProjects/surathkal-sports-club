@@ -63,7 +63,16 @@
     <footer class="site-footer">
         <div class="container d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
             <p class="mb-0">Surathkal Sports Club Organizer Portal</p>
-            <p class="mb-0">Organize teams. Manage players. Run events smoothly.</p>
+            <div class="footer-emails-wrap">
+                <span class="footer-emails-label">Organizer Emails:</span>
+                {% if organizer_emails %}
+                    {% for email in organizer_emails %}
+                        <span class="footer-email-chip">{{ email }}</span>
+                    {% endfor %}
+                {% else %}
+                    <span>No organizer emails available yet.</span>
+                {% endif %}
+            </div>
         </div>
     </footer>
 

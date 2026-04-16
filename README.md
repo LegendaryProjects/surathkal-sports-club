@@ -61,6 +61,12 @@ $env:SECRET_KEY="replace-with-a-secure-random-string"
 python app.py
 ```
 
+Optional: initialize schema from sqsql.sql manually:
+
+```powershell
+mysql -u root -p < sqsql.sql
+```
+
 6. Open:
 
 ```text
@@ -69,7 +75,7 @@ http://127.0.0.1:5000
 
 ## Database Schema
 
-See mysql_schema.sql for complete DDL.
+See sqsql.sql for complete DDL.
 
 ## Notes
 

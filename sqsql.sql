@@ -1,8 +1,8 @@
-CREATE DATABASE IF NOT EXISTS surathkal_sports_club
+CREATE DATABASE IF NOT EXISTS surathkal_sports_club2
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
-USE surathkal_sports_club;
+USE surathkal_sports_club2;
 
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -11,11 +11,20 @@ CREATE TABLE IF NOT EXISTS users (
   password_hash VARCHAR(255) NOT NULL
 );
 
+-- NEW TABLE: Resolves string duplication and update anomalies
+CREATE TABLE IF NOT EXISTS sports (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(60) NOT NULL UNIQUE
+);
+
 CREATE TABLE IF NOT EXISTS teams (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
-  sport VARCHAR(60) NOT NULL,
-  CONSTRAINT uq_team_name_sport UNIQUE (name, sport)
+  sport_id INT NOT NULL,
+  CONSTRAINT fk_team_sport FOREIGN KEY (sport_id)
+    REFERENCES sports(id)
+    ON DELETE RESTRICT,
+  CONSTRAINT uq_team_name_sport UNIQUE (name, sport_id)
 );
 
 CREATE TABLE IF NOT EXISTS players (
@@ -39,22 +48,27 @@ CREATE TABLE IF NOT EXISTS players (
   CHECK (jersey_number BETWEEN 1 AND 99)
 );
 
+-- UPDATED: Added sport_id to link the tournament to a specific sport
 CREATE TABLE IF NOT EXISTS tournaments (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(120) NOT NULL UNIQUE,
+  sport_id INT NOT NULL,
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
   created_by INT NOT NULL,
+  CONSTRAINT fk_tournament_sport FOREIGN KEY (sport_id)
+    REFERENCES sports(id)
+    ON DELETE RESTRICT,
   CONSTRAINT fk_tournament_creator FOREIGN KEY (created_by)
     REFERENCES users(id)
     ON DELETE CASCADE,
   CHECK (end_date > start_date)
 );
 
+-- UPDATED: Removed the 'sport' column (3NF violation)
 CREATE TABLE IF NOT EXISTS tournament_matches (
   id INT AUTO_INCREMENT PRIMARY KEY,
   tournament_id INT NOT NULL,
-  sport VARCHAR(60) NOT NULL,
   team_one_id INT NOT NULL,
   team_two_id INT NOT NULL,
   match_date DATE NOT NULL,
@@ -80,5 +94,6 @@ CREATE TABLE IF NOT EXISTS tournament_matches (
     match_date,
     start_time
   ),
-  CHECK (end_time > start_time)
+  CHECK (end_time > start_time),
+  CHECK (team_one_id != team_two_id) -- Ensures a team doesn't play itself
 );
